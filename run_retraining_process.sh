@@ -5,10 +5,10 @@ saved_data_path="/nfs/obelix/raid2/msavasci/pipeline-structure/saved-data/"
 
 controller_generator_folder_path="/Users/msavasci/Desktop/Research/Obelix-Pipeline-Structure/"
 
-measurement_program="measurement_program_side_new.py"
-workload_generator="workload_generator_side_new.py"
-model_generator="model_generator_new.py"
-pi_controller="controller_generator_new.py"
+measurement_program="measurement_program_side.py"
+workload_generator="workload_generator_side.py"
+model_generator="model_generator.py"
+pi_controller="controller_generator.py"
 
 app1="Mediawiki"
 app2="SocialNetwork"

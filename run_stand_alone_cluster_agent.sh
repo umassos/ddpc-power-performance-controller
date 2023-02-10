@@ -3,7 +3,7 @@
 folder_path="/workspace/pipeline-structure/"
 saved_data_path="/workspace/pipeline-structure/saved-data/"
 
-cluster_agent="ClusterAgentWithMultiplePolicyOptions.py"
+cluster_agent="cluster_agent_with_multiple_policy_options.py"
 
 app1="Mediawiki"
 app2="SocialNetwork"

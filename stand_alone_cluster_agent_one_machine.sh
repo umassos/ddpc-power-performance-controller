@@ -3,7 +3,7 @@
 folder_path="/nfs/obelix/raid2/msavasci/pipeline-structure/"
 saved_data_path="/nfs/obelix/raid2/msavasci/pipeline-structure/saved-data/"
 
-cluster_agent="cluster_agent_server_level_new.py"
+cluster_agent="cluster_agent_server_level.py"
 
 app1="Mediawiki"
 app2="SocialNetwork"
@@ -13,9 +13,6 @@ selected_app_web_path1="/gw/"
 selected_app_web_path2="/wrk2-api/"
 selected_app_path=$selected_app_web_path2
 
-# controller_parameters="MediawikiControllerParameters-8-t-10.txt"
-# controller_parameters="SocialNetworkControllerParameters-handCrafted.txt"
-# controller_parameters="MediawikiControllerParameters-handCrafted.txt"
 controller_parameters="SocialNetworkModelParameters-60-ten-percent-t.txt"
 
 allocated_power_file="allocatedPower-"

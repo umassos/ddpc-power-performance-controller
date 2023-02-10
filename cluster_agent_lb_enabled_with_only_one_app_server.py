@@ -11,10 +11,9 @@ import random
 import argparse
 import statistics
 
-# addresses = {'53': 'obelix53.cs.umass.edu', '56': 'obelix56.cs.umass.edu', '73': 'obelix73.cs.umass.edu', '91': 'obelix91.cs.umass.edu'}
-ipToMachineNames = { '192.168.245.54': 'WikiImage_German3' }
-machineToSetPower = { 'WikiImage_German4': 58 }
-VMPath = '/etc/libvirt/qemu/ubuntu_18_04_guest5.xml'
+ipToMachineNames = { '192.168.245.53': 'WikiImage_German3' }
+machineToSetPower = { 'WikiImage_German3': 58 }
+VMPath = '/etc/libvirt/qemu/ubuntu_18_04_guest4.xml'
 
 logFile = "/var/log/haproxy.log"
 
@@ -31,13 +30,12 @@ dropPercentage = []
 
 ap = argparse.ArgumentParser()
 
-ap.add_argument("-nl", "--numberoflinestoberead", type=int, required=True, help="Number of lines to be read")
-ap.add_argument("-st", "--samplingtime", type=int, required=True, help="Sampling time")
-ap.add_argument("-t", "--tunepercentage", type=float, required=True, help="Tune percentage on Kp and Ki values")
+ap.add_argument("-nl", "--numberoflinestoberead", required=True, help="Number of lines to be read")
+ap.add_argument("-st", "--samplingtime", required=True, help="Sampling time")
+ap.add_argument("-t", "--tunepercentage", required=True, help="Tune percentage on Kp and Ki values")
 ap.add_argument("-p", "--applicationsubpath", required=True, help="Application subpath")
 ap.add_argument("-sf", "--sourcefile", required=True, help="File that is to be read")
-ap.add_argument("-ri", "--referenceInput", type=float, required=True, help="Reference input target")
-ap.add_argument("-th", "--threshold", type=int, required=True, help="Retraining threshold")
+ap.add_argument("-ri", "--referenceInput", required=True, help="Reference input target")
 
 ap.add_argument("-ap", "--allocatedpower", required=True, help="File to keep allocated power")
 ap.add_argument("-ep", "--estimatedpower", required=True, help="File to keep estimated power")
@@ -55,26 +53,25 @@ ap.add_argument("-is", "--integralswitchonoff", required=False, help="File to ke
 args = vars(ap.parse_args())
 
 ## The values of the following six variables will be provided by the datacenter operator.
-numberOfLinesToBeRead = args["numberoflinestoberead"]                          # Read log file (number of line)
-samplingTime = args["samplingtime"]                                            # Sampling time
-tunePercentage = args["tunepercentage"]
-applicationSubPath = args["applicationsubpath"]
-sourceFile = args["sourcefile"]
-refInput = args["referenceInput"]
-retraining_threshold = args["threshold"]
+numberOfLinesToBeRead = int(args["numberoflinestoberead"])                          # Read log file (number of line)
+samplingTime = int(args["samplingtime"])                                            # Sampling time
+tunePercentage = float(args["tunepercentage"])
+applicationSubPath = str(args["applicationsubpath"])
+sourceFile = str(args["sourcefile"])
+refInput = float(args["referenceInput"])
 
-fileToKeepAllocatedPowerData = args["allocatedpower"]                          # File for allocated power data
-fileToKeepEstimatedPowerData = args["estimatedpower"]                          # File for estimated power data
-fileToKeepMeasuredData = args["measuredresponsetime"]                          # File for measured response time
-fileToKeepInterestedLogFileColumns = args["logfile"]                           # File for interested apache log file columns
-fileToKeepErrorValue = args["errorvalue"]                                      # File for controller input/error input
-fileToKeepDropPercentage = args["droppercentage"]                              # File for keeping drop percentage
-fileToKeepEstimatedNumberOfRequest = args["estimatednumberofrequest"]          # File for keeping estimating number of requests
-fileToKeepPTerms = args["pterms"]                                              # File for keeping P terms
-fileToKeepITerms = args["iterms"]                                              # File for keeping I terms
-fileToKeepOperatingPoints = args["operatingpoints"]                            # File for keeping operating point values
-fileToKeepIntegrator = args["integrator"]                                      # File for keeping integrator
-fileToKeepIntegralSwitchOnOff = args["integralswitchonoff"]                    # File for keeping integral switch on/off
+fileToKeepAllocatedPowerData = str(args["allocatedpower"])                          # File for allocated power data
+fileToKeepEstimatedPowerData = str(args["estimatedpower"])                          # File for estimated power data
+fileToKeepMeasuredData = str(args["measuredresponsetime"])                          # File for measured response time
+fileToKeepInterestedLogFileColumns = str(args["logfile"])                           # File for interested apache log file columns
+fileToKeepErrorValue = str(args["errorvalue"])                                      # File for controller input/error input
+fileToKeepDropPercentage = str(args["droppercentage"])                              # File for keeping drop percentage
+fileToKeepEstimatedNumberOfRequest = str(args["estimatednumberofrequest"])          # File for keeping estimating number of requests
+fileToKeepPTerms = str(args["pterms"])                                              # File for keeping P terms
+fileToKeepITerms = str(args["iterms"])                                              # File for keeping I terms
+fileToKeepOperatingPoints = str(args["operatingpoints"])                            # File for keeping operating point values
+fileToKeepIntegrator = str(args["integrator"])                                      # File for keeping integrator
+fileToKeepIntegralSwitchOnOff = str(args["integralswitchonoff"])                    # File for keeping integral switch on/off
 
 kpValues = {}
 kiValues = {}
@@ -96,7 +93,7 @@ def readControllerValues():
             powerValues[str(currentline[0])] = float(currentline[3])
             responseTimeValues[str(currentline[0])] = float(currentline[4])
             aValues[str(currentline[0])] = float(currentline[5])
-            # bValues[str(currentline[0])] = float(currentline[6])
+            bValues[str(currentline[0])] = float(currentline[6])
             numberOfRequests.append(int(currentline[0]))
 
 
@@ -218,44 +215,6 @@ def commandServerAgent(receivedMessage):
     sock.send(json.dumps(receivedMessage).encode())
     sock.close()
 
-''' Retrieved from : https://thispointer.com/python-get-last-n-lines-of-a-text-file-like-tail-command/'''
-def get_last_n_lines(file_name, N):
-    # Create an empty list to keep the track of last N lines
-    list_of_lines = []
-    # Open file for reading in binary mode
-    with open(file_name, 'rb') as read_obj:
-        # Move the cursor to the end of the file
-        read_obj.seek(0, os.SEEK_END)
-        # Create a buffer to keep the last read line
-        buffer = bytearray()
-        # Get the current position of pointer i.e eof
-        pointer_location = read_obj.tell()
-        # Loop till pointer reaches the top of the file
-        while pointer_location >= 0:
-            # Move the file pointer to the location pointed by pointer_location
-            read_obj.seek(pointer_location)
-            # Shift pointer location by -1
-            pointer_location = pointer_location -1
-            # read that byte / character
-            new_byte = read_obj.read(1)
-            # If the read byte is new line character then it means one line is read
-            if new_byte == b'\n':
-                # Save the line in list of lines
-                list_of_lines.append(buffer.decode()[::-1])
-                # If the size of list reaches N, then return the reversed list
-                if len(list_of_lines) == N:
-                    return list(reversed(list_of_lines))
-                # Reinitialize the byte array to save next line
-                buffer = bytearray()
-            else:
-                # If last read character is not eol then add it in buffer
-                buffer.extend(new_byte)
-        # As file is read completely, if there is still data in buffer, then its first line.
-        if len(buffer) > 0:
-            list_of_lines.append(buffer.decode()[::-1])
-    # return the reversed list
-    return list(reversed(list_of_lines))
-
 
 def writeToFile( allocatedPowerData, estimatedPowerData, responseTimeData, errorData, dropPercentage, estimatedNumberOfRequest, pTerms, iTerms, operatingPoints, integrators, integralSwitchOnOff, logData ):
 
@@ -297,12 +256,8 @@ def writeToFile( allocatedPowerData, estimatedPowerData, responseTimeData, error
         filehandle.writelines("%s\n" % place for place in logData)
 
 
-def run_retraining_pipeline(number_of_request):
-    os.system("./run_retraining_process.sh " + str(number_of_request))
-
-
 def main():
-    # readControllerValues()
+    readControllerValues()
     global dropPercentage, logData
 
     intOk = True
@@ -316,10 +271,6 @@ def main():
 
     initialDetection = 0
 
-    violationKeeper = 0
-
-    average_request_keeper = 0
-
     # writingCounter = False
 
     # time.sleep(1) # Wait 1 sec to make log file warmup
@@ -332,7 +283,6 @@ def main():
     while True:
         # errorData, responseTimeData, allocatedPowerData, estimatedPowerData, estimatedNumberOfRequest, integralSwitchOnOff, correctedPower, dropPercentage, pTerms, iTerms, integrators, operatingPoints, logData = [], [], [], [], [], [], [], [], [], [], [], [], []
         logData, dropPercentage = [], []
-        readControllerValues()
 
         # with open(logFile, "r") as file:
         #     for line in file:
@@ -355,8 +305,6 @@ def main():
             #     errorData, responseTimeData, allocatedPowerData, estimatedPowerData, estimatedNumberOfRequest, integralSwitchOnOff, correctedPower, dropPercentage, pTerms, iTerms, integrators, operatingPoints, logData = [], [], [], [], [], [], [], [], [], [], [], [], []
 
         # writingCounter = True
-
-        # while get_last_n_lines(logFile, 2)[0] != get_last_n_lines(logFile, 2)[0]:
 
         readResponseTime, estimationOfNumberOfRequest = readResponseTimeFromLog(numberOfLinesToBeRead)
         
@@ -400,22 +348,6 @@ def main():
 
         ''' 2. Measured response times are recorded '''
         responseTimeData = actualResponseTime
-
-        if (refInput < actualResponseTime):
-            violationKeeper += 1
-            average_request_keeper += estimationOfNumberOfRequest 
-
-        else:
-            violationKeeper = 0
-            average_request_keeper = 0
-
-        if violationKeeper >= retraining_threshold:
-            # Retrain the model.
-            print("Time to retrain the model")
-            my_thread = threading.Thread(target = run_retraining_pipeline, args = (int(average_request_keeper/retraining_threshold)))
-            my_thread.start()
-            violationKeeper = 0
-            average_request_keeper = 0
 
         currError = round(refInput - actualResponseTime, 3)
 
@@ -501,7 +433,7 @@ def main():
 
         allocatedPower = tempAllocatedPower
 
-        print(f"Power is being set to {allocatedPower}")
+        print("Power is being set to %d" %allocatedPower)
 
         ''' 8. Allocated power is recorded '''
         allocatedPowerData= allocatedPower

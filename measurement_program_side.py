@@ -7,7 +7,6 @@ import threading
 import math
 import argparse
 import timeit
-# from statistics import mean
 
 # logFile = "/Users/msavasci/Desktop/Research/Synthesis_Project/Designing_a_Controller/Data_Acquisition/Social_Networking_Application/haproxy_social_network.log"
 

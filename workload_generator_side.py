@@ -100,34 +100,11 @@ def sendPOSTRequest(connection_info, n):
 
 
 def run(connection_info, number_of_request, number_of_user):
-    # processes = [mp.Process(target = self.sendRequest, args=(numberofrequest)) for x in range(number_of_user)]
-
-    #     for p in processes:
-    #         p.start()
-
-    #     print("Start threads joining")
-
-    #     for p in processes:
-    #         p.join()
-    #     # time.sleep(random.random())
-
-    #     time.sleep(interval)
-
-    # for _ in range(iteration):
     threads = []
 
     for _ in range(int(number_of_request/3)):
         type_of_request = request_types[random.randint(0, 1)]
         
-        # if type_of_request == "POST":
-        #     p = threading.Thread(target = sendPOSTRequest, args=(connection_info, number_of_request))
-        #     p.start()
-        #     threads.append(p)
-        
-        # else:
-        #     p = threading.Thread(target = sendGETRequest, args=(connection_info, number_of_request, random.randint(0, 1)))
-        #     p.start()
-        #     threads.append(p)
         p = threading.Thread(target = sendGETRequest, args=(connection_info, number_of_request, random.randint(0, 1)))
         p.start()
         threads.append(p)

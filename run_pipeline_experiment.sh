@@ -1,20 +1,16 @@
 #!/bin/bash
 
-# folder_path="/workspace/pipeline-structure-modified/"
-# saved_data_path="/workspace/pipeline-structure-modified/saved-data/"
 folder_path="/nfs/obelix/raid2/msavasci/pipeline-structure/"
 saved_data_path="/nfs/obelix/raid2/msavasci/pipeline-structure/saved-data/"
 
 controller_generator_folder_path="/Users/msavasci/Desktop/Research/Obelix-Pipeline-Structure/"
 
-measurement_program="measurement_program_side_new.py"
-workload_generator="workload_generator_side_new.py"
+measurement_program="measurement_program_side.py"
+workload_generator="workload_generator_side.py"
 
-model_generator="model_generator_new.py"
-# model_generator="ModelGeneratorMergedPipeline.py"
-pi_controller="controller_generator_new.py"
-# cluster_agent="ClusterAgentLBEnabled.py"
-cluster_agent="cluster_agent_server_level_new.py"
+model_generator="model_generator.py"
+pi_controller="controller_generator.py"
+cluster_agent="cluster_agent_server_level.py"
 
 app1="Mediawiki"
 app2="SocialNetwork"
@@ -74,5 +70,3 @@ message_to_controller_generator="python3.7 ${controller_generator_folder_path}${
 message_to_cluster_manager="python3 ${folder_path}${cluster_agent} -nl 180 -st 1 -t 0.1 -ri 1.0 -th 5 -p ${selected_app_path} -sf ${folder_path}${controller_parameters} -ap ${saved_data_path}${allocated_power_file}${experiment_number}${tuning_percentage}${extension} -ep ${saved_data_path}${estimated_power_file}${experiment_number}${tuning_percentage}${extension} -rt ${saved_data_path}${response_time_file}${experiment_number}${tuning_percentage}${extension} -lf ${saved_data_path}${log_file}${experiment_number}${tuning_percentage}${extension} -ev ${saved_data_path}${error}${experiment_number}${tuning_percentage}${extension} -dp ${saved_data_path}${drop}${experiment_number}${tuning_percentage}${extension} -er ${saved_data_path}${estimated_request}${experiment_number}${tuning_percentage}${extension} -pt ${saved_data_path}${pterm}${experiment_number}${tuning_percentage}${extension} -it ${saved_data_path}${iterm}${experiment_number}${tuning_percentage}${extension} -op ${saved_data_path}${operation_point}${experiment_number}${tuning_percentage}${extension} -in ${saved_data_path}${integrator}${experiment_number}${tuning_percentage}${extension} -is ${saved_data_path}${integrator_switch}${experiment_number}${tuning_percentage}${extension}"
 
 python3 client_app_52_new.py -d $experiment_duration -s "${folder_path}${selected_app}${model_parameters}${experiment_number}${tuning_percentage}${extension}" -f "${controller_parameters}${experiment_number}${tuning_percentage}${extension}" -mm "${message_to_measurement_program}" -mw "${message_to_workload_generator}" -mg "${message_to_model_generator}" -mp "${message_to_controller_generator}" -mc "${message_to_cluster_manager}"
-
-# python3 client_app_52_new.py -d $experiment_duration -s ${controller_generator_folder_path}${selected_app}${model_parameters}${experiment_number}${tuning_percentage}${extension} -f ${selected_app}${controller_parameters}${experiment_number}${tuning_percentage}${extension} -mm $message_to_measurement_program -mw $message_to_workload_generator -mg $message_to_model_generator -mp $message_to_controller_generator -mc $message_to_cluster_manager
