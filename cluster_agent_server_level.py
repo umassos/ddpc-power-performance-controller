@@ -264,7 +264,7 @@ def run_retraining_pipeline(number_of_request):
 
 
 def main():
-    # readControllerValues()
+    retraining_track = 0
     global dropPercentage, logData
 
     intOk = True
@@ -292,7 +292,13 @@ def main():
 
     # while ( time.time() - start ) < experimentDuration:
     while True:
-        # errorData, responseTimeData, allocatedPowerData, estimatedPowerData, estimatedNumberOfRequest, integralSwitchOnOff, correctedPower, dropPercentage, pTerms, iTerms, integrators, operatingPoints, logData = [], [], [], [], [], [], [], [], [], [], [], [], []
+        if retraninig_track > 5:
+            # Profile the application again.
+            # Generate ARX models based on profile data.
+            # Compute PI controller variables based on ARX models.
+            retraninig_track = 0
+            time.sleep(1000)
+
         logData, dropPercentage = [], []
         readControllerValues()
 
@@ -474,49 +480,10 @@ def main():
 
         writeToFile(allocatedPowerData, estimatedPowerData, responseTimeData, errorData, dropPercentage, estimatedNumberOfRequest, pTerms, iTerms, operatingPoints, integrators, integralSwitchOnOff, logData)
 
+        if currError < 0:
+            retraninig_track = retraninig_track + 1
+
         time.sleep(samplingTime)
-
-        # with open(fileToKeepAllocatedPowerData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in allocatedPowerData)
-
-        # with open(fileToKeepEstimatedPowerData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in estimatedPowerData)
-
-        # with open(fileToKeepMeasuredData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in responseTimeData)
-
-        # with open(fileToKeepErrorValue, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in errorData)
-
-        # with open(fileToKeepDropPercentage, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in dropPercentage)
-
-        # with open(fileToKeepEstimatedNumberOfRequest, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in estimatedNumberOfRequest)
-        
-        # with open(fileToKeepPTerms, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in pTerms)
-
-        # with open(fileToKeepITerms, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in iTerms)
-
-        # with open(fileToKeepOperatingPoints, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in operatingPoints)
-
-        # with open(fileToKeepIntegrator, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in integrators)
-
-        # with open(fileToKeepIntegralSwitchOnOff, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in integralSwitchOnOff)
-
-        # ''''''
-        
-        # with open(fileToKeepEstimatedToBeAllocatedPower, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in correctedPower)
-
-        # with open(fileToKeepInterestedLogFileColumns, 'a') as filehandle:
-        #     filehandle.writelines("%s\n" % place for place in logData)
-
 
 if __name__ == '__main__':
     main()

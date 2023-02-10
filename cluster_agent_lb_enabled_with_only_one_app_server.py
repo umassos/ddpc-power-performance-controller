@@ -260,6 +260,7 @@ def main():
     readControllerValues()
     global dropPercentage, logData
 
+    retraninig_track = 0
     intOk = True
     newIntegrator = 0.0
     integrator = 0.0
@@ -447,48 +448,6 @@ def main():
         writeToFile(allocatedPowerData, estimatedPowerData, responseTimeData, errorData, dropPercentage, estimatedNumberOfRequest, pTerms, iTerms, operatingPoints, integrators, integralSwitchOnOff, logData)
 
         time.sleep(samplingTime)
-
-        # with open(fileToKeepAllocatedPowerData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in allocatedPowerData)
-
-        # with open(fileToKeepEstimatedPowerData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in estimatedPowerData)
-
-        # with open(fileToKeepMeasuredData, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in responseTimeData)
-
-        # with open(fileToKeepErrorValue, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in errorData)
-
-        # with open(fileToKeepDropPercentage, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in dropPercentage)
-
-        # with open(fileToKeepEstimatedNumberOfRequest, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in estimatedNumberOfRequest)
-        
-        # with open(fileToKeepPTerms, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in pTerms)
-
-        # with open(fileToKeepITerms, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in iTerms)
-
-        # with open(fileToKeepOperatingPoints, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in operatingPoints)
-
-        # with open(fileToKeepIntegrator, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in integrators)
-
-        # with open(fileToKeepIntegralSwitchOnOff, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in integralSwitchOnOff)
-
-        # ''''''
-        
-        # with open(fileToKeepEstimatedToBeAllocatedPower, 'a') as filehandle:
-        #     filehandle.writelines("%s," % place for place in correctedPower)
-
-        # with open(fileToKeepInterestedLogFileColumns, 'a') as filehandle:
-        #     filehandle.writelines("%s\n" % place for place in logData)
-
 
 if __name__ == '__main__':
     main()
