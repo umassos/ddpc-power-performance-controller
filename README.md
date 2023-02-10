@@ -22,6 +22,6 @@
 
 ### Retraining process is happening using run_retraining_process.sh
 
-### server_app_*_new.py scripts are responsible for starting related program. For example, server_app_73_new.py is responsible for starting workload generator.
+### server_app_*.py scripts are responsible for starting related program. For example, server_app_73.py is responsible for starting workload generator.
 
 [![DOI](https://zenodo.org/badge/600198295.svg)](https://zenodo.org/badge/latestdoi/600198295)
